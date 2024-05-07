@@ -101,13 +101,22 @@
 
 
 
-    <main>
-      <aside
-        class="row-span-2 text-2xl px-6 py-2 flex-col justify-between py-5 px-2">
-        <p>Resultado Final</p>
-        <p>Progressão</p>
-      </aside>
+    <main class="h-full">
+      <section id="charts-container">
+  <div class="h[36dvh]">  
+   <p>Resultado Final</p> 
+   <canvas id="final-money-distribution"></canvas> 
+  </div>
+
+  <div class="h[56dvh]">
+    <p>Progressão</p>
+    <canvas id="progression"></canvas>
+  </div>
+      </section>
+      
     </main>
     <script type="module" src="./main.js"></script>
   </body>
 </html>
+
+
