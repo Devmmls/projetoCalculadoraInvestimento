@@ -1,26 +1,34 @@
 import { generateReturnsArray } from "./src/investmentGoals";
 import { Chart } from "chart.js/auto";
+import { createTable } from "./src/table";
 
-
-const finalMoneyChart = document.getElementById('final-money-distribution');
-const progressionChart = document.getElementById('progression');
+const finalMoneyChart = document.getElementById("final-money-distribution");
+const progressionChart = document.getElementById("progression");
 const form = document.getElementById("investment-form");
-const clearFormButton = document.getElementById('clear-form');
+const clearFormButton = document.getElementById("clear-form");
 
+let dougnutChartReference = {};
 let progressionChartReference = {};
-let dougnutChartReference= {};
+
+const columnsArray = [
+  { columnLabel: "Total investido", accessor: "investedAmount" },
+  { columnLabel: "Rendimento mensal", accessor: "interestReturns" },
+  { columnLabel: "Rendimento total", accessor: "totalInterestReturns" },
+  { columnLabel: "Mês", accessor: "month" },
+  { columnLabel: "Quantia total", accessor: "totalAmount" },
+];
 
 function formatCurrency(value) {
-  return value.tofixed(2);
+  return value.toFixed(2);
 }
 
 function renderProgression(evt) {
   evt.preventDefault();
-  if (document.querySelector('error')) {
+  if (document.querySelector(".error")) {
     return;
-  };
+  }
 
-resetCharts();
+  resetCharts();
 
   const startingAmount = Number(
     document.getElementById("starting-amount").value.replace(",", ".")
@@ -30,12 +38,10 @@ resetCharts();
   );
   const timeAmount = Number(document.getElementById("time-amount").value);
   const timeAmountPeriod = document.getElementById("time-amount-period").value;
-  const returnRate = document
-    .getElementById("return-rate")
-    .value.replace(",", ".");
-  const returnRatePeriod = Number(
-    document.getElementById("evaluation-period").value
+  const returnRate = Number(
+    document.getElementById("return-rate").value.replace(",", ".")
   );
+  const returnRatePeriod = document.getElementById("evaluation-period").value;
   const taxRate = Number(
     document.getElementById("tax-rate").value.replace(",", ".")
   );
@@ -49,87 +55,101 @@ resetCharts();
     returnRatePeriod
   );
 
-  const finalInvestmentObject = returnsArray[returnsArray.lenght - 1];
+  /* const finalInvestmentObject = returnsArray[returnsArray.length - 1];
 
-
-dougnutChartReference = new Chart(finalMoneyChart, {
-  type: 'doughnut',
-  data: {
-    labels: [
-      'Total investido', 'Rendimento', 'Imposto'],
-    datasets: [
-      {
-      data: [
-      formatCurrency(finalInvestmentObject.investedAmount), 
-      formatCurrency(finalInvestmentObject.totalInterestReturns * (1 - taxRate / 100)), 
-      formatCurrency(finalInvestmentObject.totalInterestReturns * (taxRate / 100)),
-    ],
-      backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)'
-     ],
-     hoverOffset: 4
+  dougnutChartReference = new Chart(finalMoneyChart, {
+    type: "doughnut",
+    data: {
+      labels: ["Total investido", "Rendimento", "Imposto"],
+      datasets: [
+        {
+          data: [
+            formatCurrency(finalInvestmentObject.investedAmount),
+            formatCurrency(
+              finalInvestmentObject.totalInterestReturns * (1 - taxRate / 100)
+            ),
+            formatCurrency(
+              finalInvestmentObject.totalInterestReturns * (taxRate / 100)
+            ),
+          ],
+          backgroundColor: [
+            "rgb(255, 99, 132)",
+            "rgb(54, 162, 235)",
+            "rgb(255, 205, 86)",
+          ],
+          hoverOffset: 4,
+          options: options,
+        },
+      ],
     },
-  ],
-},
-})
+  });
 
-progressionChartReference = new Chart(progressionChart, {
-  type: 'bar',
-  data: {
-    labels: returnsArray.map(finalInvestmentObject => finalInvestmentObject.month),
-    datasets: [{
-      label: 'Total investido', 
-      data: returnsArray.map(finalInvestmentObject => formatCurrency(finalInvestmentObject.investedAmount)),
-      backgroundColor: 'rgb(255, 99, 132)',
-
-}, {
-  label: 'Retorono do investimento',
-  data: returnsArray.map(finalInvestmentObject => formatCurrency(finalInvestmentObject.investReturns)),
-  backgroundColor: 'rgb(54, 162, 235)',
-}]
-  },
-  options: {
-    scales: {
-        xAxes: [{
-            stacked: true
-        }],
-        yAxes: [{
-            stacked: true
-        }]
-    }
+  progressionChartReference = new Chart(progressionChart, {
+    type: "bar",
+    data: {
+      labels: returnsArray.map(
+        (finalInvestmentObject) => finalInvestmentObject.month
+      ),
+      datasets: [
+        {
+          label: "Total investido",
+          data: returnsArray.map((finalInvestmentObject) =>
+            formatCurrency(finalInvestmentObject.investedAmount)
+          ),
+          backgroundColor: "rgb(255, 99, 132)",
+        },
+        {
+          label: "Retorno do investimento",
+          data: returnsArray.map((finalInvestmentObject) =>
+            formatCurrency(finalInvestmentObject.interestReturns)
+          ),
+          backgroundColor: "rgb(54, 162, 235)",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          stacked: true,
+        },
+        y: {
+          stacked: true,
+        },
+      },
+    },
+  });
+  */
 }
-});
-
-}
-
-function isObjectEmpty (obj){
+function isObjectEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
 
 function resetCharts() {
-  if (!isObjectEmpty(dougnutChartReference) &&  !isObjectEmpty(progressionChart)
+  if (
+    !isObjectEmpty(dougnutChartReference) &&
+    !isObjectEmpty(progressionChartReference)
   ) {
-  dougnutChartReference.destroy();
-  progressionChartReference.destroy();
+    dougnutChartReference.destroy();
+    progressionChartReference.destroy();
   }
 }
 
-function clearForm () {
-  form['starting-amount'].value = '';
-  form['additional-contribution'].value = '';
-  form['time-amount'].value = '';
-  form['return-rate'].value = '';
-  form['tax-rate'].value = '';
+function clearForm() {
+  form["starting-amount"].value = "";
+  form["additional-contribution"].value = "";
+  form["time-amount"].value = "";
+  form["return-rate"].value = "";
+  form["tax-rate"].value = "";
 
   resetCharts();
 
-const errorInputContainers = document.querySelectorAll('error');
-for (const errorInputContainer of errorInputContainers) {
-  errorInputContainer.classList.remove('error');
-  errorInputContainer.parentElement.querySelector('p').remove();
-}
+  const errorInputContainers = document.querySelectorAll("error");
+
+  for (const errorInputContainer of errorInputContainers) {
+    errorInputContainer.classList.remove("error");
+    errorInputContainer.parentElement.querySelector("p").remove();
+  }
 }
 
 function validateInput(evt) {
@@ -141,20 +161,23 @@ function validateInput(evt) {
   const grandParentElement = evt.target.parentElement.parentElement;
   const inputValue = evt.target.value.replace(",", ".");
 
-  
   if (
-    !parentElement.classList.contains('error') &&
+    !parentElement.classList.contains("error") &&
     (isNaN(inputValue) || Number(inputValue) <= 0)
   ) {
     const errorTextElement = document.createElement("p");
-    errorTextElement.classList.add('text-red-500');
-    errorTextElement.innerText = 'Insira um valor numérico maior que zero';
+    errorTextElement.classList.add("text-red-500");
+    errorTextElement.innerText = "Insira um valor numérico maior que zero";
 
     parentElement.classList.add("error");
     grandParentElement.appendChild(errorTextElement);
-  } else if (parentElement.classList.contains('error') && !isNaN(inputValue) && Number(inputValue) > 0) {
-  parentElement.classList.remove('error');
-  grandParentElement.querySelector('p').remove()
+  } else if (
+    parentElement.classList.contains("error") &&
+    !isNaN(inputValue) &&
+    Number(inputValue) > 0
+  ) {
+    parentElement.classList.remove("error");
+    grandParentElement.querySelector("p").remove();
   }
 }
 
@@ -164,7 +187,5 @@ for (const formElement of form) {
   }
 }
 
-/* form.addEventListener("submit", renderProgression); */
+form.addEventListener("submit", renderProgression);
 clearFormButton.addEventListener("click", clearForm);
-
-
