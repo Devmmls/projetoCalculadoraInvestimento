@@ -141,7 +141,7 @@ function renderProgression(evt) {
       },
     },
   });
-  
+  createTable(columnsArray, returnsArray, "results-table");
 }
 function isObjectEmpty(obj) {
   return Object.keys(obj).length === 0;
