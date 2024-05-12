@@ -10,7 +10,6 @@ const clearFormButton = document.getElementById("clear-form");
 let dougnutChartReference = {};
 let progressionChartReference = {};
 
-
 const columnsArray = [
   { columnLabel: "Mês", accessor: "month" },
   {
@@ -50,7 +49,6 @@ function renderProgression(evt) {
   }
 
   resetCharts();
- 
 
   const startingAmount = Number(
     document.getElementById("starting-amount").value.replace(",", ".")
@@ -100,7 +98,7 @@ function renderProgression(evt) {
             "rgb(255, 205, 86)",
           ],
           hoverOffset: 4,
-         /*  options: options, */
+          /*  options: options, */
         },
       ],
     },
@@ -208,6 +206,18 @@ for (const formElement of form) {
     formElement.addEventListener("blur", validateInput);
   }
 }
+const mainEl = document.querySelector("main");
+const carouselEl = document.getElementById("carousel");
+const nextButton = document.getElementById("slide-arrow-next");
+const previousButton = document.getElementById("slide-arrow-previous");
+
+nextButton.addEventListener("click", () => {
+  carouselEl.scrollLeft += mainEl.clientWidth;
+});
+
+previousButton.addEventListener("click", () => {
+  carouselEl.scrollLeft -= mainEl.clientWidth;
+});
 
 form.addEventListener("submit", renderProgression);
 clearFormButton.addEventListener("click", clearForm);
