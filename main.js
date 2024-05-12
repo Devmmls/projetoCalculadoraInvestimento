@@ -11,20 +11,36 @@ let dougnutChartReference = {};
 let progressionChartReference = {};
 
 const columnsArray = [
-  { columnLabel: "Total investido", accessor: "investedAmount" },
-  { columnLabel: "Rendimento mensal", accessor: "interestReturns" },
-  { columnLabel: "Rendimento total", accessor: "totalInterestReturns" },
   { columnLabel: "Mês", accessor: "month" },
-  { columnLabel: "Quantia total", accessor: "totalAmount" },
+  {
+    columnLabel: "Total Investido",
+    accessor: "investedAmount",
+    format: (numberInfo) => formatCurrency(numberInfo),
+  },
+  {
+    columnLabel: "Rendimento Mensal",
+    accessor: "interestReturns",
+    format: (numberInfo) => formatCurrency(numberInfo),
+  },
+  {
+    columnLabel: "Rendimento Total",
+    accessor: "totalInterestReturns",
+    format: (numberInfo) => formatCurrency(numberInfo),
+  },
+  {
+    columnLabel: "Quantia Total",
+    accessor: "totalAmount",
+    format: (numberInfo) => formatCurrency(numberInfo),
+  },
 ];
 
 function formatCurrency(value) {
-  return value.toFixed(2);
+  return value.toLocalString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
 function renderProgression(evt) {
   evt.preventDefault();
-  if (document.querySelector(".error")) {
+  if (document.querySelector("error")) {
     return;
   }
 
@@ -120,6 +136,7 @@ function renderProgression(evt) {
     },
   });
   */
+  createTable(columnsArray, returnsArray, "results-table");
 }
 function isObjectEmpty(obj) {
   return Object.keys(obj).length === 0;
