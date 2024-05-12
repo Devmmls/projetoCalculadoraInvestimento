@@ -35,7 +35,7 @@ const columnsArray = [
 ];
 
 function formatCurrencyToTable(value) {
-  return value.toLocalString("pt-BR", { style: "currency", currency: "BRL" });
+  return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
 function formatCurrencyToGraph(value) {
@@ -98,7 +98,6 @@ function renderProgression(evt) {
             "rgb(255, 205, 86)",
           ],
           hoverOffset: 4,
-          /*  options: options, */
         },
       ],
     },

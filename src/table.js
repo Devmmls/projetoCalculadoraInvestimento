@@ -34,7 +34,7 @@ function createTableHeader(tableReference, columnsArray) {
     headerRow.classList.add(cssClass)
   );
   for (const tableColumnObject of columnsArray) {
-    const headerElement = /* html*/ `<th class='text-center'>${tableColumnObject.columnLabel}</th>`;
+    const headerElement = `<th class='text-center'>${tableColumnObject.columnLabel}</th>`;
     headerRow.innerHTML += headerElement;
   }
   tableHeadReference.appendChild(headerRow);
@@ -57,7 +57,7 @@ function createTableBody(tableReference, tableItems, columnsArray) {
 
     for (const tableColumn of columnsArray) {
       const formatFn = tableColumn.format ?? ((info) => info);
-      tableRow.innerHTML += /* html */ `<td class='text-center'>${formatFn(
+      tableRow.innerHTML += `<td class='text-center'>${formatFn(
         tableItem[tableColumn.accessor]
       )}</td>`;
     }
